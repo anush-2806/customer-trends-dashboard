@@ -6,15 +6,32 @@
 <title>Customer Trends Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
-.side{position:fixed;inset:0 auto 0 0;width:235px;background:#111827;color:#fff;padding:24px 14px;overflow:auto}.logo{font-size:21px;font-weight:bold;margin:0 10px 25px}.logo b{color:#60a5fa}
-.nav{display:block;width:100%;border:0;background:transparent;color:#cbd5e1;text-align:left;padding:12px;margin:5px 0;border-radius:8px;font-size:15px;cursor:pointer}.nav:hover,.nav.on{background:#2563eb;color:#fff}
-.main{margin-left:235px;padding:30px;max-width:1500px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:15px}h1{margin:0}.sub{color:#64748b;margin-top:6px}.tag{background:#dbeafe;color:#1d4ed8;padding:8px 12px;border-radius:20px;font-weight:bold}
-.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card,.chart,.info,.table-wrap{background:#fff;border-radius:13px;padding:19px;box-shadow:0 3px 14px #0001}.label{color:#64748b;font-size:13px}.value{font-size:26px;font-weight:bold;margin-top:8px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.full{grid-column:1/-1}.chart{min-height:330px}.chart h3{margin:0 0 15px}.chart canvas{max-height:270px}.ins{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ins div{background:#f8fafc;border-left:4px solid #2563eb;padding:13px;border-radius:7px}
-table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;border-bottom:1px solid #e5e7eb}th{background:#f8fafc}.table-wrap{overflow:auto;margin-top:18px}
-@media(max-width:900px){.cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.full{grid-column:auto}.side{width:190px}.main{margin-left:190px}}
-@media(max-width:600px){.side{position:static;width:100%;height:auto}.main{margin:0;padding:16px}.cards{grid-template-columns:1fr}.top{display:block}.tag{display:inline-block;margin-top:12px}}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
+.side{position:fixed;inset:0 auto 0 0;width:235px;background:#111827;color:#fff;padding:24px 14px;overflow:auto}
+.logo{font-size:21px;font-weight:bold;margin:0 10px 25px}.logo b{color:#60a5fa}
+.nav{display:block;width:100%;border:0;background:transparent;color:#cbd5e1;text-align:left;padding:12px;margin:5px 0;border-radius:8px;font-size:15px;cursor:pointer}
+.nav:hover,.nav.on{background:#2563eb;color:#fff}
+.main{margin-left:235px;padding:30px;max-width:1500px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:15px}
+h1{margin:0}.sub{color:#64748b;margin-top:6px}.tag{background:#dbeafe;color:#1d4ed8;padding:8px 12px;border-radius:20px;font-weight:bold}
+.page{display:none}.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card,.chart,.info,.table-wrap,.formbox{background:#fff;border-radius:13px;padding:19px;box-shadow:0 3px 14px #0001}
+.label{color:#64748b;font-size:13px}.value{font-size:26px;font-weight:bold;margin-top:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.full{grid-column:1/-1}
+.chart{min-height:330px}.chart h3{margin:0 0 15px}.chart canvas{max-height:270px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid #e5e7eb;white-space:nowrap}th{background:#f8fafc}
+.table-wrap{overflow:auto;margin-top:18px}
+button{font-family:inherit}.primary{background:#2563eb;color:#fff;border:0;padding:11px 16px;border-radius:8px;font-weight:bold;cursor:pointer}.success{background:#16a34a;color:#fff;border:0;padding:11px 16px;border-radius:8px;font-weight:bold;cursor:pointer}.danger{background:#dc2626;color:#fff;border:0;padding:8px 11px;border-radius:7px;cursor:pointer}.secondary{background:#e5e7eb;color:#111827;border:0;padding:11px 16px;border-radius:8px;cursor:pointer}
+.formbox{margin:18px 0;display:none}.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+input,select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:7px;background:#fff}
+.form-actions{grid-column:1/-1;display:flex;gap:10px;margin-top:5px}
+.notice{padding:12px;background:#eff6ff;border-radius:8px;margin-bottom:15px;color:#1e40af}
+.ins{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ins div{background:#f8fafc;border-left:4px solid #2563eb;padding:13px;border-radius:7px}
+.small{font-size:12px;color:#64748b}
+@media(max-width:900px){.cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.full{grid-column:auto}.side{width:190px}.main{margin-left:190px}.formgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.side{position:static;width:100%;height:auto}.main{margin:0;padding:16px}.cards{grid-template-columns:1fr}.top{display:block}.tag{display:inline-block;margin-top:12px}.formgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -31,14 +48,17 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;bor
 </aside>
 
 <main class="main">
-<div class="top"><div><h1 id="title">Customer Trends Analytics</h1><div class="sub" id="subtitle">Customer Shopping Behavior Analysis</div></div><div class="tag">Python • SQL • Power BI</div></div>
+<div class="top">
+<div><h1 id="title">Customer Trends Analytics</h1><div class="sub" id="subtitle">Customer Shopping Behavior Analysis</div></div>
+<div class="tag">Python • SQL • Power BI</div>
+</div>
 
 <section id="dashboard" class="page active">
 <div class="cards">
-<div class="card"><div class="label">Total Customers</div><div class="value">3,900</div></div>
-<div class="card"><div class="label">Total Revenue</div><div class="value">$233,081</div></div>
-<div class="card"><div class="label">Average Purchase</div><div class="value">$59.76</div></div>
-<div class="card"><div class="label">Top Category</div><div class="value">Clothing</div></div>
+<div class="card"><div class="label">Total Customers</div><div class="value" id="kpiCustomers">3,900</div></div>
+<div class="card"><div class="label">Total Revenue</div><div class="value" id="kpiRevenue">$233,081</div></div>
+<div class="card"><div class="label">Average Purchase</div><div class="value" id="kpiAverage">$59.76</div></div>
+<div class="card"><div class="label">Top Category</div><div class="value" id="kpiCategory">Clothing</div></div>
 </div>
 <div class="grid">
 <div class="chart"><h3>Revenue by Category</h3><canvas id="d1"></canvas></div>
@@ -50,13 +70,14 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;bor
 </section>
 
 <section id="customers" class="page">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-<h2 style="margin:0">Customer Management</h2>
-<button id="addCustomerBtn" style="background:#2563eb;color:white;border:0;padding:12px 18px;border-radius:8px;font-weight:bold;cursor:pointer">➕ Add New Customer</button>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+<div><h2 style="margin:0">Customer Management</h2><div class="small">Add, edit and delete customers. Changes update the dashboard immediately.</div></div>
+<button id="addCustomerBtn" class="primary">➕ Add New Customer</button>
 </div>
-<div id="customerForm" style="display:none;background:#fff;padding:20px;border-radius:13px;box-shadow:0 3px 14px #0001;margin-bottom:18px">
-<h3>Add New Customer</h3>
-<form id="newCustomerForm" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+
+<div id="customerForm" class="formbox">
+<h3 id="formTitle">Add New Customer</h3>
+<form id="newCustomerForm" class="formgrid">
 <input name="id" placeholder="Customer ID" required>
 <input name="age" type="number" min="18" max="100" placeholder="Age" required>
 <select name="gender"><option>Male</option><option>Female</option></select>
@@ -75,99 +96,218 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;bor
 <input name="previous" type="number" min="0" placeholder="Previous Purchases">
 <select name="payment"><option>PayPal</option><option>Credit Card</option><option>Cash</option><option>Debit Card</option><option>Venmo</option><option>Bank Transfer</option></select>
 <select name="frequency"><option>Every 3 Months</option><option>Annually</option><option>Quarterly</option><option>Monthly</option><option>Bi-Weekly</option><option>Fortnightly</option><option>Weekly</option></select>
-<div style="grid-column:1/-1"><button type="submit" style="background:#16a34a;color:white;border:0;padding:11px 18px;border-radius:8px;font-weight:bold">Save Customer</button> <button type="button" id="cancelCustomerBtn" style="padding:11px 18px;border:0;border-radius:8px">Cancel</button></div>
-</form></div>
-<div class="cards">
-<div class="card"><div class="label">Total Customers</div><div class="value">3,900</div></div>
-<div class="card"><div class="label">Male</div><div class="value">2,652</div></div>
-<div class="card"><div class="label">Female</div><div class="value">1,248</div></div>
-<div class="card"><div class="label">Average Age</div><div class="value">44.07</div></div>
+<div class="form-actions"><button class="success" type="submit">Save Customer</button><button class="secondary" type="button" id="cancelCustomerBtn">Cancel</button></div>
+</form>
 </div>
-<div class="grid"><div class="chart"><h3>Customers by Gender</h3><canvas id="c1"></canvas></div><div class="chart"><h3>Customers by Age Group</h3><canvas id="c2"></canvas></div><div class="chart full"><h3>Subscription Status</h3><canvas id="c3"></canvas></div></div>
+
+<div class="cards">
+<div class="card"><div class="label">Customers</div><div class="value" id="customerCount">3,900</div></div>
+<div class="card"><div class="label">Current Revenue</div><div class="value" id="customerRevenue">$233,081</div></div>
+<div class="card"><div class="label">Average Purchase</div><div class="value" id="customerAverage">$59.76</div></div>
+<div class="card"><div class="label">Added in Browser</div><div class="value" id="addedCount">0</div></div>
+</div>
+
+<div class="grid">
+<div class="chart"><h3>Customers by Gender</h3><canvas id="c1"></canvas></div>
+<div class="chart"><h3>Customers by Age Group</h3><canvas id="c2"></canvas></div>
+<div class="chart full"><h3>Subscription Status</h3><canvas id="c3"></canvas></div>
+</div>
+
 <div class="table-wrap">
-<h3>Recently Added Customers</h3>
-<table><thead><tr><th>ID</th><th>Age</th><th>Gender</th><th>Item</th><th>Category</th><th>Amount</th><th>Location</th></tr></thead>
-<tbody id="customerTableBody"><tr><td colspan="7">No new customers added yet.</td></tr></tbody></table>
+<h3>Recently Added / Edited Customers</h3>
+<table>
+<thead><tr><th>ID</th><th>Age</th><th>Gender</th><th>Item</th><th>Category</th><th>Amount</th><th>Location</th><th>Action</th></tr></thead>
+<tbody id="customerTableBody"></tbody>
+</table>
 </div>
 </section>
 
 <section id="revenue" class="page">
-<div class="cards"><div class="card"><div class="label">Total Revenue</div><div class="value">$233,081</div></div><div class="card"><div class="label">Average Purchase</div><div class="value">$59.76</div></div><div class="card"><div class="label">Highest Category Revenue</div><div class="value">$104,264</div></div><div class="card"><div class="label">Highest Location Revenue</div><div class="value">$5,784</div></div></div>
-<div class="grid"><div class="chart"><h3>Revenue by Category</h3><canvas id="r1"></canvas></div><div class="chart"><h3>Average Purchase by Category</h3><canvas id="r2"></canvas></div><div class="chart full"><h3>Revenue by Season</h3><canvas id="r3"></canvas></div></div>
+<div class="cards">
+<div class="card"><div class="label">Total Revenue</div><div class="value" id="revTotal">$233,081</div></div>
+<div class="card"><div class="label">Average Purchase</div><div class="value" id="revAvg">$59.76</div></div>
+<div class="card"><div class="label">Highest Category Revenue</div><div class="value" id="revHighest">$104,264</div></div>
+<div class="card"><div class="label">Highest Location Revenue</div><div class="value" id="revLocation">$5,784</div></div>
+</div>
+<div class="grid">
+<div class="chart"><h3>Revenue by Category</h3><canvas id="r1"></canvas></div>
+<div class="chart"><h3>Average Purchase by Category</h3><canvas id="r2"></canvas></div>
+<div class="chart full"><h3>Revenue by Season</h3><canvas id="r3"></canvas></div>
+</div>
 </section>
 
 <section id="categories" class="page">
 <div class="chart"><h3>Category Performance</h3><canvas id="cat1"></canvas></div>
-<div class="table-wrap"><table><thead><tr><th>Category</th><th>Customers</th><th>Revenue</th><th>Avg Purchase</th><th>Avg Rating</th></tr></thead><tbody>
-<tr><td>Clothing</td><td>1,737</td><td>$104,264</td><td>$60.03</td><td>3.72</td></tr>
-<tr><td>Accessories</td><td>1,240</td><td>$74,200</td><td>$59.84</td><td>3.77</td></tr>
-<tr><td>Footwear</td><td>599</td><td>$36,093</td><td>$60.26</td><td>3.79</td></tr>
-<tr><td>Outerwear</td><td>324</td><td>$18,524</td><td>$57.17</td><td>3.75</td></tr>
-</tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Category</th><th>Customers</th><th>Revenue</th><th>Avg Purchase</th><th>Avg Rating</th></tr></thead><tbody id="categoryTable"></tbody></table></div>
 </section>
 
-<section id="payments" class="page"><div class="grid"><div class="chart"><h3>Customers by Payment Method</h3><canvas id="p1"></canvas></div><div class="chart"><h3>Revenue by Payment Method</h3><canvas id="p2"></canvas></div></div><div class="info" style="margin-top:18px"><b>Insight:</b> Credit Card generated the highest revenue ($40,310). PayPal had the highest customer count (677).</div></section>
+<section id="payments" class="page">
+<div class="grid"><div class="chart"><h3>Customers by Payment Method</h3><canvas id="p1"></canvas></div><div class="chart"><h3>Revenue by Payment Method</h3><canvas id="p2"></canvas></div></div>
+<div class="info" style="margin-top:18px"><b>Insight:</b> <span id="paymentInsight"></span></div>
+</section>
 
-<section id="discounts" class="page"><div class="grid"><div class="chart"><h3>Discount Usage</h3><canvas id="dc1"></canvas></div><div class="chart"><h3>Average Purchase</h3><canvas id="dc2"></canvas></div></div><div class="info" style="margin-top:18px"><b>Insight:</b> 1,677 purchases used discounts. Average purchase was $59.28 with a discount and $60.13 without one.</div></section>
+<section id="discounts" class="page">
+<div class="grid"><div class="chart"><h3>Discount Usage</h3><canvas id="dc1"></canvas></div><div class="chart"><h3>Average Purchase</h3><canvas id="dc2"></canvas></div></div>
+<div class="info" style="margin-top:18px"><b>Insight:</b> <span id="discountInsight"></span></div>
+</section>
 
-<section id="locations" class="page"><div class="chart"><h3>Top 10 Locations by Revenue</h3><canvas id="loc1"></canvas></div><div class="table-wrap"><table><thead><tr><th>Location</th><th>Customers</th><th>Revenue</th></tr></thead><tbody>
-<tr><td>Montana</td><td>96</td><td>$5,784</td></tr><tr><td>Illinois</td><td>92</td><td>$5,617</td></tr><tr><td>California</td><td>95</td><td>$5,605</td></tr><tr><td>Idaho</td><td>93</td><td>$5,587</td></tr><tr><td>Nevada</td><td>87</td><td>$5,514</td></tr>
-</tbody></table></div></section>
+<section id="locations" class="page">
+<div class="chart"><h3>Top 10 Locations by Revenue</h3><canvas id="loc1"></canvas></div>
+<div class="table-wrap"><table><thead><tr><th>Location</th><th>Customers</th><th>Revenue</th></tr></thead><tbody id="locationTable"></tbody></table></div>
+</section>
 
-<section id="ratings" class="page"><div class="cards"><div class="card"><div class="label">Highest Rating</div><div class="value">3.79</div><div class="label">Footwear</div></div><div class="card"><div class="label">Lowest Rating</div><div class="value">3.72</div><div class="label">Clothing</div></div></div><div class="chart" style="margin-top:18px"><h3>Average Rating by Category</h3><canvas id="ra1"></canvas></div></section>
+<section id="ratings" class="page">
+<div class="cards"><div class="card"><div class="label">Highest Rating</div><div class="value" id="highRating">3.79</div></div><div class="card"><div class="label">Lowest Rating</div><div class="value" id="lowRating">3.72</div></div></div>
+<div class="chart" style="margin-top:18px"><h3>Average Rating by Category</h3><canvas id="ra1"></canvas></div>
+</section>
 </main>
 
 <script>
-const data={
-cat:['Clothing','Accessories','Footwear','Outerwear'],
-catRev:[104264,74200,36093,18524],catAvg:[60.03,59.84,60.26,57.17],catRate:[3.72,3.77,3.79,3.75],
-pay:['Credit Card','PayPal','Cash','Debit Card','Venmo','Bank Transfer'],payCount:[671,677,670,636,634,612],payRev:[40310,40109,40002,38742,37374,36544],
-freq:['Every 3 Months','Annually','Quarterly','Monthly','Bi-Weekly','Fortnightly','Weekly'],freqCount:[584,572,563,553,547,542,539],
-loc:['Montana','Illinois','California','Idaho','Nevada','Alabama','New York','North Dakota','West Virginia','Nebraska'],locRev:[5784,5617,5605,5587,5514,5261,5257,5220,5174,5172]
+const baseCustomers=3900, baseRevenue=233081;
+const storageKey='customerTrendsFullCustomers';
+const original={
+gender:{Male:2652,Female:1248},
+age:{'18-25':571,'26-35':742,'36-45':729,'46-55':753,'56-65':750,'66-70':355},
+category:{Clothing:{count:1737,revenue:104264,rating:3.722395},Accessories:{count:1240,revenue:74200,rating:3.770242},Footwear:{count:599,revenue:36093,rating:3.793823},Outerwear:{count:324,revenue:18524,rating:3.745988}},
+payment:{'PayPal':{count:677,revenue:40109},'Credit Card':{count:671,revenue:40310},'Cash':{count:670,revenue:40002},'Debit Card':{count:636,revenue:38742},'Venmo':{count:634,revenue:37374},'Bank Transfer':{count:612,revenue:36544}},
+season:{Fall:{count:975,revenue:60018},Spring:{count:999,revenue:58679},Winter:{count:971,revenue:58607},Summer:{count:955,revenue:55777}},
+discount:{No:{count:2223,revenue:133670},Yes:{count:1677,revenue:99411}},
+location:{Montana:{count:96,revenue:5784},Illinois:{count:92,revenue:5617},California:{count:95,revenue:5605},Idaho:{count:93,revenue:5587},Nevada:{count:87,revenue:5514},Alabama:{count:89,revenue:5261},'New York':{count:87,revenue:5257},'North Dakota':{count:83,revenue:5220},'West Virginia':{count:81,revenue:5174},Nebraska:{count:87,revenue:5172}},
+frequency:{'Every 3 Months':584,'Annually':572,'Quarterly':563,'Monthly':553,'Bi-Weekly':547,'Fortnightly':542,'Weekly':539},
+subscription:{No:2847,Yes:1053}
 };
-const charts={};
-function chart(id,type,labels,values,opts={}){
- const el=document.getElementById(id);if(!el)return;
- charts[id]=new Chart(el,{type,data:{labels,datasets:[{data:values}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},...opts}});
-}
-chart('d1','bar',data.cat,data.catRev);chart('d2','bar',data.pay,data.payRev,{indexAxis:'y'});chart('d3','bar',data.freq,data.freqCount,{indexAxis:'y'});chart('d4','bar',data.cat,data.catRate,{scales:{y:{min:3,max:4}}});chart('d5','bar',data.loc,data.locRev,{indexAxis:'y'});
-chart('c1','doughnut',['Male','Female'],[2652,1248]);chart('c2','bar',['18-25','26-35','36-45','46-55','56-65','66-70'],[571,742,729,753,750,355]);chart('c3','doughnut',['No','Yes'],[2847,1053]);
-chart('r1','bar',data.cat,data.catRev);chart('r2','bar',data.cat,data.catAvg);chart('r3','bar',['Fall','Spring','Winter','Summer'],[60018,58679,58607,55777]);
-chart('cat1','bar',data.cat,data.catRev);chart('p1','bar',data.pay,data.payCount,{indexAxis:'y'});chart('p2','bar',data.pay,data.payRev,{indexAxis:'y'});chart('dc1','doughnut',['No Discount','Discount'],[2223,1677]);chart('dc2','bar',['No Discount','Discount'],[60.13,59.28],{scales:{y:{min:55,max:62}}});chart('loc1','bar',data.loc,data.locRev,{indexAxis:'y'});chart('ra1','bar',data.cat,data.catRate,{scales:{y:{min:3,max:4}}});
 
-const titles={dashboard:['Customer Trends Analytics','Customer Shopping Behavior Analysis'],customers:['Customer Analysis','Customer demographics and subscription overview'],revenue:['Revenue Analysis','Revenue performance across categories and seasons'],categories:['Category Analysis','Category performance comparison'],payments:['Payment Analysis','Payment method usage and revenue'],discounts:['Discount Analysis','Discount usage and purchase values'],locations:['Location Analysis','Top customer locations by revenue'],ratings:['Ratings Analysis','Average customer ratings by category']};
-document.querySelectorAll('.nav').forEach(btn=>btn.addEventListener('click',()=>{
- const page=btn.dataset.page;
- document.querySelectorAll('.nav').forEach(x=>x.classList.remove('on'));btn.classList.add('on');
- document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(page).classList.add('active');
- document.getElementById('title').textContent=titles[page][0];document.getElementById('subtitle').textContent=titles[page][1];
- window.scrollTo({top:0,behavior:'smooth'});
-}));
-
-/* ADD CUSTOMER */
-const CUSTOMER_STORAGE_KEY='customerTrendsNewCustomers';
-function getNewCustomers(){try{return JSON.parse(localStorage.getItem(CUSTOMER_STORAGE_KEY)||'[]')}catch(e){return[]}}
-function saveNewCustomers(x){localStorage.setItem(CUSTOMER_STORAGE_KEY,JSON.stringify(x))}
+function getAdded(){try{return JSON.parse(localStorage.getItem(storageKey)||'[]')}catch(e){return[]}}
+function saveAdded(a){localStorage.setItem(storageKey,JSON.stringify(a))}
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
-function renderNewCustomers(){
- const b=document.getElementById('customerTableBody'); if(!b)return;
- const a=getNewCustomers();
- b.innerHTML=a.length?a.slice().reverse().map(c=>`<tr><td>${esc(c.id)}</td><td>${esc(c.age)}</td><td>${esc(c.gender)}</td><td>${esc(c.item)}</td><td>${esc(c.category)}</td><td>$${Number(c.amount).toFixed(2)}</td><td>${esc(c.location)}</td></tr>`).join(''):'<tr><td colspan="7">No new customers added yet.</td></tr>';
-}
-const addCustomerBtn=document.getElementById('addCustomerBtn');
-const customerForm=document.getElementById('customerForm');
-const newCustomerForm=document.getElementById('newCustomerForm');
-const cancelCustomerBtn=document.getElementById('cancelCustomerBtn');
-if(addCustomerBtn)addCustomerBtn.onclick=()=>{customerForm.style.display='block';customerForm.scrollIntoView({behavior:'smooth'})};
-if(cancelCustomerBtn)cancelCustomerBtn.onclick=()=>{customerForm.style.display='none';newCustomerForm.reset()};
-if(newCustomerForm)newCustomerForm.onsubmit=e=>{
- e.preventDefault(); const f=new FormData(newCustomerForm); const c=Object.fromEntries(f.entries());
- const a=getNewCustomers();
- if(a.some(x=>String(x.id)===String(c.id))){alert('A customer with this Customer ID already exists.');return}
- a.push(c);saveNewCustomers(a);renderNewCustomers();newCustomerForm.reset();customerForm.style.display='none';alert('Customer added successfully!');
-};
-renderNewCustomers();
+function money(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
 
+let added=getAdded();
+const charts={};
+function makeChart(id,type,labels,values,options={}){
+ const el=document.getElementById(id); if(!el)return;
+ charts[id]=new Chart(el,{type,data:{labels,datasets:[{data:values}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},...options}});
+}
+function updateChart(id,type,labels,values,options={}){
+ if(charts[id]){charts[id].data.labels=labels;charts[id].data.datasets[0].data=values;charts[id].options={...charts[id].options,...options};charts[id].update();return}
+ makeChart(id,type,labels,values,options);
+}
+function clone(obj){return JSON.parse(JSON.stringify(obj))}
+
+function stats(){
+ const s={gender:clone(original.gender),age:clone(original.age),category:clone(original.category),payment:clone(original.payment),season:clone(original.season),discount:clone(original.discount),location:clone(original.location),frequency:clone(original.frequency),subscription:clone(original.subscription)};
+ let revenue=baseRevenue;
+ added.forEach(c=>{
+  const amount=Number(c.amount)||0; revenue+=amount;
+  s.gender[c.gender]=(s.gender[c.gender]||0)+1;
+  const age=Number(c.age)||0; const ag=age<=25?'18-25':age<=35?'26-35':age<=45?'36-45':age<=55?'46-55':age<=65?'56-65':'66-70'; s.age[ag]=(s.age[ag]||0)+1;
+  if(!s.category[c.category])s.category[c.category]={count:0,revenue:0,rating:0}; s.category[c.category].count++; s.category[c.category].revenue+=amount;
+  if(!s.payment[c.payment])s.payment[c.payment]={count:0,revenue:0}; s.payment[c.payment].count++; s.payment[c.payment].revenue+=amount;
+  if(!s.season[c.season])s.season[c.season]={count:0,revenue:0}; s.season[c.season].count++; s.season[c.season].revenue+=amount;
+  if(!s.discount[c.discount])s.discount[c.discount]={count:0,revenue:0}; s.discount[c.discount].count++; s.discount[c.discount].revenue+=amount;
+  if(!s.location[c.location])s.location[c.location]={count:0,revenue:0}; s.location[c.location].count++; s.location[c.location].revenue+=amount;
+  s.frequency[c.frequency]=(s.frequency[c.frequency]||0)+1;
+  s.subscription[c.subscription]=(s.subscription[c.subscription]||0)+1;
+ });
+ return {s,revenue,total:baseCustomers+added.length,avg:revenue/(baseCustomers+added.length)};
+}
+
+function renderAll(){
+ const {s,revenue,total,avg}=stats();
+ document.getElementById('kpiCustomers').textContent=total.toLocaleString();
+ document.getElementById('kpiRevenue').textContent=money(revenue);
+ document.getElementById('kpiAverage').textContent=money(avg);
+ document.getElementById('customerCount').textContent=total.toLocaleString();
+ document.getElementById('customerRevenue').textContent=money(revenue);
+ document.getElementById('customerAverage').textContent=money(avg);
+ document.getElementById('addedCount').textContent=added.length;
+ document.getElementById('revTotal').textContent=money(revenue);
+ document.getElementById('revAvg').textContent=money(avg);
+
+ const cats=Object.entries(s.category).sort((a,b)=>b[1].revenue-a[1].revenue);
+ document.getElementById('kpiCategory').textContent=cats[0][0];
+ document.getElementById('revHighest').textContent=money(cats[0][1].revenue);
+
+ const locs=Object.entries(s.location).sort((a,b)=>b[1].revenue-a[1].revenue);
+ document.getElementById('revLocation').textContent=money(locs[0][1].revenue);
+
+ updateChart('d1','bar',cats.map(x=>x[0]),cats.map(x=>x[1].revenue));
+ updateChart('r1','bar',cats.map(x=>x[0]),cats.map(x=>x[1].revenue));
+ updateChart('cat1','bar',cats.map(x=>x[0]),cats.map(x=>x[1].revenue));
+ updateChart('d2','bar',Object.keys(s.payment),Object.values(s.payment).map(x=>x.revenue),{indexAxis:'y'});
+ updateChart('p1','bar',Object.keys(s.payment),Object.values(s.payment).map(x=>x.count),{indexAxis:'y'});
+ updateChart('p2','bar',Object.keys(s.payment),Object.values(s.payment).map(x=>x.revenue),{indexAxis:'y'});
+ updateChart('d3','bar',Object.keys(s.frequency),Object.values(s.frequency),{indexAxis:'y'});
+ updateChart('c1','doughnut',['Male','Female'],[s.gender.Male,s.gender.Female]);
+ updateChart('c2','bar',Object.keys(s.age),Object.values(s.age));
+ updateChart('c3','doughnut',['No','Yes'],[s.subscription.No,s.subscription.Yes]);
+ updateChart('r2','bar',cats.map(x=>x[0]),cats.map(x=>x[1].revenue/x[1].count));
+ updateChart('r3','bar',Object.keys(s.season),Object.values(s.season).map(x=>x.revenue));
+ updateChart('dc1','doughnut',['No Discount','Discount'],[s.discount.No.count,s.discount.Yes.count]);
+ updateChart('dc2','bar',['No Discount','Discount'],[s.discount.No.revenue/s.discount.No.count,s.discount.Yes.revenue/s.discount.Yes.count]);
+ const topLoc=locs.slice(0,10);
+ updateChart('d5','bar',topLoc.map(x=>x[0]),topLoc.map(x=>x[1].revenue),{indexAxis:'y'});
+ updateChart('loc1','bar',topLoc.map(x=>x[0]),topLoc.map(x=>x[1].revenue),{indexAxis:'y'});
+ updateChart('d4','bar',cats.map(x=>x[0]),cats.map(x=>x[1].rating));
+ updateChart('ra1','bar',cats.map(x=>x[0]),cats.map(x=>x[1].rating));
+ const rated=cats.map(x=>[x[0],x[1].rating]).sort((a,b)=>b[1]-a[1]);
+ document.getElementById('highRating').textContent=Number(rated[0][1]).toFixed(2);
+ document.getElementById('lowRating').textContent=Number(rated[rated.length-1][1]).toFixed(2);
+
+ document.getElementById('categoryTable').innerHTML=cats.map(x=>`<tr><td>${esc(x[0])}</td><td>${x[1].count.toLocaleString()}</td><td>${money(x[1].revenue)}</td><td>${money(x[1].revenue/x[1].count)}</td><td>${Number(x[1].rating).toFixed(2)}</td></tr>`).join('');
+ document.getElementById('locationTable').innerHTML=topLoc.map(x=>`<tr><td>${esc(x[0])}</td><td>${x[1].count}</td><td>${money(x[1].revenue)}</td></tr>`).join('');
+ document.getElementById('paymentInsight').textContent=`${Object.entries(s.payment).sort((a,b)=>b[1].revenue-a[1].revenue)[0][0]} currently has the highest payment-method revenue.`;
+ document.getElementById('discountInsight').textContent=`${s.discount.Yes.count.toLocaleString()} purchases have a discount flag; the dashboard recalculates this whenever a customer is added, edited or deleted.`;
+
+ renderCustomerTable();
+}
+
+function renderCustomerTable(){
+ const body=document.getElementById('customerTableBody');
+ if(!added.length){body.innerHTML='<tr><td colspan="8">No new customers added yet.</td></tr>';return}
+ body.innerHTML=added.slice().reverse().map(c=>`<tr>
+ <td>${esc(c.id)}</td><td>${esc(c.age)}</td><td>${esc(c.gender)}</td><td>${esc(c.item)}</td><td>${esc(c.category)}</td><td>${money(c.amount)}</td><td>${esc(c.location)}</td>
+ <td><button class="primary" onclick="editCustomer('${encodeURIComponent(c.id)}')">Edit</button> <button class="danger" onclick="deleteCustomer('${encodeURIComponent(c.id)}')">Delete</button></td>
+ </tr>`).join('');
+}
+
+const form=document.getElementById('newCustomerForm');
+const box=document.getElementById('customerForm');
+let editId=null;
+document.getElementById('addCustomerBtn').onclick=()=>{editId=null;document.getElementById('formTitle').textContent='Add New Customer';form.reset();box.style.display='block';box.scrollIntoView({behavior:'smooth'})};
+document.getElementById('cancelCustomerBtn').onclick=()=>{box.style.display='none';form.reset();editId=null};
+
+form.onsubmit=e=>{
+ e.preventDefault(); const c=Object.fromEntries(new FormData(form).entries());
+ if(editId===null && added.some(x=>String(x.id)===String(c.id))){alert('This Customer ID already exists.');return}
+ if(editId!==null){
+   const i=added.findIndex(x=>String(x.id)===String(editId));
+   if(i>=0)added[i]=c;
+   editId=null;
+ }else added.push(c);
+ saveAdded(added);box.style.display='none';form.reset();renderAll();alert('Customer saved successfully. Dashboard updated.');
+};
+
+window.editCustomer=id=>{
+ const decoded=decodeURIComponent(id), c=added.find(x=>String(x.id)===decoded); if(!c)return;
+ editId=decoded;document.getElementById('formTitle').textContent='Edit Customer';
+ [...form.elements].forEach(el=>{if(el.name&&c[el.name]!==undefined)el.value=c[el.name]});
+ box.style.display='block';box.scrollIntoView({behavior:'smooth'});
+};
+window.deleteCustomer=id=>{
+ const decoded=decodeURIComponent(id);
+ if(!confirm('Delete this customer?'))return;
+ added=added.filter(x=>String(x.id)!==decoded);saveAdded(added);renderAll();
+};
+
+const titles={dashboard:['Customer Trends Analytics','Customer Shopping Behavior Analysis'],customers:['Customer Analysis','Customer management and live dashboard updates'],revenue:['Revenue Analysis','Revenue performance across categories and seasons'],categories:['Category Analysis','Category performance comparison'],payments:['Payment Analysis','Payment method usage and revenue'],discounts:['Discount Analysis','Discount usage and purchase values'],locations:['Location Analysis','Top customer locations by revenue'],ratings:['Ratings Analysis','Average customer ratings by category']};
+document.querySelectorAll('.nav').forEach(btn=>btn.onclick=()=>{
+ const page=btn.dataset.page;document.querySelectorAll('.nav').forEach(x=>x.classList.remove('on'));btn.classList.add('on');
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(page).classList.add('active');
+ document.getElementById('title').textContent=titles[page][0];document.getElementById('subtitle').textContent=titles[page][1];window.scrollTo({top:0,behavior:'smooth'});
+});
+
+renderAll();
 </script>
 </body>
 </html>
